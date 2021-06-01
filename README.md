@@ -21,8 +21,8 @@ bazel-bin/ProducerApp
 ```
 6. Open a new terminal within the folder and run Coordinator.java (similar to steps 4, 5):
 ```
-bazel build //:ProducerApp
-bazel-bin/ProducerApp
+bazel build //:Coordinator
+bazel-bin/Coordinator
 ```
 7. To view the database being updated in real time, run the following commands:
 ```
