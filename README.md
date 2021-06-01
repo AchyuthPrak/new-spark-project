@@ -5,18 +5,21 @@ This project inserts and updates data into a mongo databse upon receiving HTTP P
 To run the code successfully kindly follow these steps:
 1. Create/Install a docker image of mongodb
 2. Install Bazel
-3. Create a docker container to connect to and run mongodb in it using this command: `docker run --name myMongo -d -p 27017:27017 --name myMongo mongo`
+3. Create a docker container to connect to and run mongodb in it using this command: 
+```
+docker run --name myMongo -d -p 27017:27017 --name myMongo mongo
+```
 4. Run ProducerApp.java -- To do this, run the following commands: 
 ```
 bazel build //:ProducerApp
 bazel-bin/ProducerApp
 ```
-5. Run ConsumerApp.java (similar to step 3): 
+5. Run ConsumerApp.java (similar to step 4): 
 ```
 bazel build //:ProducerApp
 bazel-bin/ProducerApp
 ```
-6. Run Coordinator.java (similar to steps 3, 4):
+6. Run Coordinator.java (similar to steps 4, 5):
 ```
 bazel build //:ProducerApp
 bazel-bin/ProducerApp
@@ -30,11 +33,11 @@ use movies
 coll = db.TopMoviesList
 coll.find()
 ```
-8. To stop the docker container from running, use the following command: `sudo docker stop myMongo` 
+8. To stop the docker container from running, use the following command: ```sudo docker stop myMongo``` 
 9. In case you get the following error: Cannot kill container. unknown error after kill: runc did not terminate sucessfully. signaling init process caused "permission denied", 
 Run the following commands: 
 ```
 sudo aa-remove-unknown
 docker container kill myMongo
 ``` 
-10. To rerun the container(if required), use the following command: docker restart myMongo
+10. To rerun the container(if required), use the following command: ```docker restart myMongo```
