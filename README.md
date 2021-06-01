@@ -1,6 +1,6 @@
 # new-spark-project
 
-This project inserts and updates data into a mongo databse upon receiving HTTP PUT and GET requests.
+This project inserts and updates data into a mongo databse(running within a docker container) upon receiving HTTP PUT and GET requests.
 
 To run the code successfully kindly follow these steps:
 1. Create/Install a docker image of mongodb
@@ -16,8 +16,8 @@ bazel-bin/ProducerApp
 ```
 5. Open a new terminal within the folder and run ConsumerApp.java (similar to step 4): 
 ```
-bazel build //:ProducerApp
-bazel-bin/ProducerApp
+bazel build //:ConsumerApp
+bazel-bin/ConsumerApp
 ```
 6. Open a new terminal within the folder and run Coordinator.java (similar to steps 4, 5):
 ```
@@ -35,7 +35,7 @@ coll.find()
 ```
 8. To stop the docker container from running, use the following command: 
 ```
-sudo docker stop myMongo
+docker stop myMongo
 ``` 
 9. In case you get the following error: Cannot kill container. unknown error after kill: runc did not terminate sucessfully. signaling init process caused "permission denied", 
 Run the following commands: 
