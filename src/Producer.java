@@ -7,7 +7,7 @@ import spark.Request;
 public class Producer implements Messenger {
     private MongoCollection mongoCollection;
     private MongoDatabase db;
-    private String mongoHost;
+    private final String mongoHost;
     Producer(){
         mongoHost = StringConstants.mongoDbHost;
     }
@@ -18,7 +18,7 @@ public class Producer implements Messenger {
     public void setUpMongoDb() {
         MongoClient mongoClient = new MongoClient(mongoHost, StringConstants.mongoDbPort);
         db = mongoClient.getDatabase(StringConstants.database);
-        mongoCollection = db.getCollection(StringConstants.producerCollection);
+        mongoCollection = db.getCollection(StringConstants.collection);
     }
 
     @Override
@@ -39,6 +39,6 @@ public class Producer implements Messenger {
         document.append("Processed", "FALSE");
         mongoCollection.insertOne(document);
 
-        return "Successfully added " + movieT + " " + movieR + " to Database " + db.getName() + " and collection " + StringConstants.producerCollection + "\n";
+        return "Successfully added " + movieT + " " + movieR + " to Database " + db.getName() + " and collection " + StringConstants.collection + "\n";
     }
 }

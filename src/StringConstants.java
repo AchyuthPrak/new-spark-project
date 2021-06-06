@@ -1,6 +1,6 @@
 public interface StringConstants {
     String database = "movies";
-    String producerCollection = "TopMoviesList";
+    String collection = "TopMoviesList";
     String mongoDbHost = "127.0.1.1";
     int mongoDbPort = 27017;
     int producerPort = 4567;

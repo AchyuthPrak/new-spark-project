@@ -7,7 +7,7 @@ import spark.Request;
 public class Consumer implements Messenger{
     private MongoCollection mongoCollection;
     private MongoDatabase db;
-    private String mongoHost;
+    private final String mongoHost;
     Consumer(){
         mongoHost = StringConstants.mongoDbHost;
     }
@@ -18,7 +18,7 @@ public class Consumer implements Messenger{
     public void setUpMongoDb() {
         MongoClient mongoClient = new MongoClient(mongoHost, StringConstants.mongoDbPort);
         db = mongoClient.getDatabase(StringConstants.database);
-        mongoCollection = db.getCollection(StringConstants.producerCollection);
+        mongoCollection = db.getCollection(StringConstants.collection);
     }
 
     @Override
@@ -38,6 +38,6 @@ public class Consumer implements Messenger{
 
         mongoCollection.updateOne(query, updateObject);
 
-        return "Successfully updated " + movieT + " " + movieR + " in Database " + db.getName() + " and collection " + StringConstants.producerCollection + "\n";
+        return "Successfully updated " + movieT + " " + movieR + " in Database " + db.getName() + " and collection " + StringConstants.collection + "\n";
     }
 }
