@@ -1,14 +1,14 @@
 import static spark.Spark.port;
 import static spark.Spark.put;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 public class ProducerApp {
-    public static void main(String[] args) throws UnknownHostException {
-        InetAddress inetAddress = InetAddress.getLocalHost();
-        System.out.println("Producer IP Address:- " + inetAddress.getHostAddress());
+    public static void main(String[] args) {
         port(StringConstants.producerPort);
-        Producer p = new Producer();
+        Producer p;
+        if(args.length == 0)
+            p = new Producer();
+        else
+            p = new Producer(args[0]);
         p.setUpMongoDb();
         put("/newEntry", (req, res) ->  p.putToMongoDb(req));
     }

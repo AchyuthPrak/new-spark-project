@@ -16,6 +16,8 @@ import java.util.concurrent.TimeUnit;
 public class Coordinator {
     private static final ArrayList<String> moviesList = new ArrayList<>();
     private static final ArrayList<String> ratingsList = new ArrayList<>();
+    private static String prodIP="";
+    private static String consIP="";
 
     public static void initialize() {
         org.jsoup.nodes.Document document = null;
@@ -35,7 +37,7 @@ public class Coordinator {
     }
 
     public static void putRequest(int i) throws IOException {
-        URL url = new URL ("http://"+StringConstants.host+":"+StringConstants.producerPort+"/newEntry");
+        URL url = new URL ("http://"+prodIP+":"+StringConstants.producerPort+"/newEntry");
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
         con.setRequestMethod("PUT");
         con.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -65,7 +67,7 @@ public class Coordinator {
         movie = movie.replaceAll("\\s", "%20");
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://"+StringConstants.host+":"+StringConstants.consumerPort+"/updateEntry/"+movie+"/"+rating))
+                .uri(URI.create("http://"+consIP+":"+StringConstants.consumerPort+"/updateEntry/"+movie+"/"+rating))
                 .build();
 
         HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
@@ -73,12 +75,20 @@ public class Coordinator {
         System.out.println(response.body());
     }
     public static void main(String[] args) throws IOException, InterruptedException {
+        if(args.length == 0){
+            prodIP = StringConstants.mongoDbHost;
+            consIP = StringConstants.mongoDbHost;
+        }
+        else{
+            prodIP = args[0];
+            consIP = args[1];
+        }
         initialize();
         for(int i = 1; i<=5; i++){
             putRequest(i);
-            TimeUnit.SECONDS.sleep(30);
+            TimeUnit.SECONDS.sleep(15);
             getRequest(moviesList.get(i), ratingsList.get(i));
-            TimeUnit.SECONDS.sleep(30);
+            TimeUnit.SECONDS.sleep(15);
         }
     }
 }

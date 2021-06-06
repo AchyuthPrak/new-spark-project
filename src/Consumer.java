@@ -7,9 +7,16 @@ import spark.Request;
 public class Consumer implements Messenger{
     private MongoCollection mongoCollection;
     private MongoDatabase db;
+    private String mongoHost;
+    Consumer(){
+        mongoHost = StringConstants.mongoDbHost;
+    }
+    Consumer(String str){
+        mongoHost = str;
+    }
     @Override
     public void setUpMongoDb() {
-        MongoClient mongoClient = new MongoClient(StringConstants.host, StringConstants.mongoDbPort);
+        MongoClient mongoClient = new MongoClient(mongoHost, StringConstants.mongoDbPort);
         db = mongoClient.getDatabase(StringConstants.database);
         mongoCollection = db.getCollection(StringConstants.producerCollection);
     }
