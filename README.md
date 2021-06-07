@@ -7,22 +7,19 @@ To run the code successfully kindly follow these steps:
 2. Install Bazel
 3. Create a docker container to connect to and run mongodb in it using this command: 
 ```
-docker run --name myMongo -d -p 27017:27017 --name myMongo mongo
+docker run --name myMongo -d -p 27017:27017 mongo
 ```
 4. Run ProducerApp.java -- To do this, run the following commands: 
 ```
-bazel build //:ProducerApp
-bazel-bin/ProducerApp
+bazel run //:ProducerApp
 ```
 5. Open a new terminal within the folder and run ConsumerApp.java (similar to step 4): 
 ```
-bazel build //:ConsumerApp
-bazel-bin/ConsumerApp
+bazel run //:ConsumerApp
 ```
 6. Open a new terminal within the folder and run Coordinator.java (similar to steps 4, 5):
 ```
-bazel build //:Coordinator
-bazel-bin/Coordinator
+bazel run //:Coordinator
 ```
 7. To view the database being updated in real time, run the following commands:
 ```
