@@ -1,6 +1,6 @@
 # new-spark-project
 
-This project has 4 components: a producer, a consumer, a mongo database (mongoDB) and a coordinator. The producer, upon receiving a HTTP PUT request from the coordinator, puts the data into the mongoDB. Similarly, the consumer upon receiving a HTTP GET request from the coordinator, updates the relevant data in the mongoDB. The coordinator is an interactive application and the user can choose what to put to the mongoDB.
+This project has 4 components: a producer, a consumer, a mongo database (mongoDB) and a coordinator. The producer, upon receiving a HTTP PUT request from the coordinator, puts the data into the mongoDB. Similarly, the consumer upon receiving a HTTP GET request from the coordinator, updates the relevant data in the mongoDB. The coordinator is an interactive application which enables the user can choose what to put to the mongoDB.
 
 To run the code successfully kindly follow these steps:
 1. Install mongoDB
