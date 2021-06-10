@@ -1,13 +1,14 @@
 # new-spark-project
 
-This project inserts and updates data into a mongo databse(running within a docker container) upon receiving HTTP PUT and GET requests.
+This project has 4 components: a producer, a consumer, a mongo database (mongoDB) and a coordinator. The producer, upon receiving a HTTP PUT request from the coordinator, puts the data into the mongoDB. Similarly, the consumer upon receiving a HTTP GET request from the coordinator, updates the relevant data in the mongoDB. The coordinator is an interactive application and the user can choose what to put to the mongoDB.
 
 To run the code successfully kindly follow these steps:
-1. Create/Install a docker image of mongodb
+1. Install mongoDB
 2. Install Bazel
-3. Create a docker container to connect to and run mongodb in it using this command: 
+3. Connect to mongoDB using the following commands
 ```
-docker run --name myMongo -d -p 27017:27017 mongo
+sudo systemctl start mongodb
+mongo
 ```
 4. Run ProducerApp.java -- To do this, run the following commands: 
 ```
@@ -23,25 +24,15 @@ bazel run //:Coordinator
 ```
 7. To view the database being updated in real time, run the following commands:
 ```
-docker exec -it myMongo bash`
-mongo
 show dbs
 use movies
 coll = db.TopMoviesList
 coll.find()
 ```
-8. To stop the docker container from running, use the following command: 
+Optional: If required, before exiting the mongoDB, run this cmd to remove the database: `db.dropDatabase()`
+8. To stop the mongoDB server from running, use the following commands: 
 ```
-docker stop myMongo
+exit
+sudo systemctl stop mongodb
 ``` 
-9. In case you get the following error: Cannot kill container. unknown error after kill: runc did not terminate sucessfully. signaling init process caused "permission denied", 
-Run the following commands: 
-```
-sudo aa-remove-unknown
-docker container kill myMongo
-``` 
-10. To rerun the container(if required), use the following command: 
-```
-docker restart myMongo
-```
-11. Finally do `ctrl + C` to terminate ProducerApp.java and ConsumerApp.java 
+9. Finally do `ctrl + C` to terminate ProducerApp.java and ConsumerApp.java 
