@@ -12,7 +12,7 @@ public class ProducerApp {
         if(args.length == 0)
             p = new Producer();
         else
-            p = new Producer(args[0]);
+            p = new Producer(args[0], Integer.parseInt(args[1]));
         p.setUpMongoDb();
         put("/newEntry", (req, res) ->  p.putToMongoDb(req));
     }
