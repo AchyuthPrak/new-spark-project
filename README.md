@@ -30,6 +30,7 @@ coll = db.TopMoviesList
 coll.find()
 ```
 Optional: If required, before exiting the mongoDB, run this cmd to remove the database: `db.dropDatabase()`
+
 8. To stop the mongoDB server from running, use the following commands: 
 ```
 exit
