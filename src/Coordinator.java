@@ -9,14 +9,16 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Coordinator {
     private static final ArrayList<String> moviesList = new ArrayList<>();
     private static final ArrayList<String> ratingsList = new ArrayList<>();
     private static String prodIP="";
+    private static int prodPort=0;
     private static String consIP="";
+    private static int consPort=0;
 
     public static void initialize() {
         org.jsoup.nodes.Document document = null;
@@ -36,7 +38,7 @@ public class Coordinator {
     }
 
     public static void putRequest(int i) throws IOException {
-        URL url = new URL ("http://"+prodIP+":"+StringConstants.producerPort+"/newEntry");
+        URL url = new URL ("http://"+prodIP+":"+prodPort+"/newEntry");
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
         con.setRequestMethod("PUT");
         con.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -66,7 +68,7 @@ public class Coordinator {
         movie = movie.replaceAll("\\s", "%20");
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://"+consIP+":"+StringConstants.consumerPort+"/updateEntry/"+movie+"/"+rating))
+                .uri(URI.create("http://"+consIP+":"+consPort+"/updateEntry/"+movie+"/"+rating))
                 .build();
 
         HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
@@ -75,19 +77,40 @@ public class Coordinator {
     }
     public static void main(String[] args) throws IOException, InterruptedException {
         if(args.length == 0){
-            prodIP = StringConstants.mongoDbHost;
-            consIP = StringConstants.mongoDbHost;
+            prodIP = StringConstants.producerHost;
+            prodPort = StringConstants.producerPort;
+            consIP = StringConstants.consumerHost;
+            consPort = StringConstants.consumerPort;
         }
         else{
             prodIP = args[0];
-            consIP = args[1];
+            prodPort = Integer.parseInt(args[1]);
+            consIP = args[2];
+            consPort = Integer.parseInt(args[3]);
         }
         initialize();
-        for(int i = 1; i<=5; i++){
-            putRequest(i);
-            TimeUnit.SECONDS.sleep(15);
-            getRequest(moviesList.get(i), ratingsList.get(i));
-            TimeUnit.SECONDS.sleep(15);
+        for(int i=1; i<=25; i++){
+            System.out.println(i+" "+moviesList.get(i)+" "+ratingsList.get(i));
         }
+        System.out.println();
+        Scanner input = new Scanner(System.in);
+        String confirm;
+        HashSet<Integer> indexSet = new HashSet<>();
+        int i;
+        do {
+            System.out.print("Select a movie index to be added to DB (select 0 to exit): ");
+            confirm = input.nextLine();
+            i = Integer.parseInt(confirm);
+            if(i!=0){
+                if(!indexSet.contains(i)){
+                    indexSet.add(i);
+                    putRequest(i);
+                    TimeUnit.SECONDS.sleep(5);
+                    getRequest(moviesList.get(i), ratingsList.get(i));
+                }
+                else
+                    System.out.println("Already added this movie, select another index\n");
+            }
+        } while (!confirm.equals("0"));
     }
 }

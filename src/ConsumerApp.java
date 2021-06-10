@@ -12,7 +12,7 @@ public class ConsumerApp {
         if(args.length == 0)
             c = new Consumer();
         else
-            c = new Consumer(args[0]);
+            c = new Consumer(args[0], Integer.parseInt(args[1]));
         c.setUpMongoDb();
         get("/updateEntry/:movie/:rating", (req, res) ->  c.putToMongoDb(req));
     }

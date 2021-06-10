@@ -8,15 +8,18 @@ public class Consumer implements Messenger{
     private MongoCollection mongoCollection;
     private MongoDatabase db;
     private final String mongoHost;
+    private final int mongoPort;
     Consumer(){
         mongoHost = StringConstants.mongoDbHost;
+        mongoPort = StringConstants.mongoDbPort;
     }
-    Consumer(String str){
+    Consumer(String str, int i){
         mongoHost = str;
+        mongoPort = i;
     }
     @Override
     public void setUpMongoDb() {
-        MongoClient mongoClient = new MongoClient(mongoHost, StringConstants.mongoDbPort);
+        MongoClient mongoClient = new MongoClient(mongoHost, mongoPort);
         db = mongoClient.getDatabase(StringConstants.database);
         mongoCollection = db.getCollection(StringConstants.collection);
     }
